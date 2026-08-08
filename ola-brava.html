@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ola Brava — Barra Cevichera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep: #073B57;
+    --ocean: #0A5A82;
+    --foam: #EAF6F8;
+    --paper: #FFFFFF;
+    --coral: #FF6B4A;
+    --ink: #10242E;
+    --ink-soft: #5C7078;
+    --line: rgba(7,59,87,0.12);
+    --radius: 16px;
+    --display: 'Archivo Black', sans-serif;
+    --body: 'Inter', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:var(--body); color:var(--ink); background:var(--foam);
+    -webkit-font-smoothing:antialiased;
+  }
+  img{display:block; width:100%; height:100%; object-fit:cover;}
+  a{color:inherit; text-decoration:none;}
+
+  /* TOP STRIP */
+  .topstrip{
+    background:var(--coral); color:#fff; text-align:center;
+    font-size:13.5px; font-weight:600; padding:8px 16px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+
+  /* HERO BANNER */
+  .banner{
+    position:relative; height:230px; overflow:hidden;
+    background:linear-gradient(180deg, var(--ocean) 0%, var(--deep) 100%);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .banner svg.wave{
+    position:absolute; bottom:0; left:0; width:100%; opacity:0.5;
+  }
+  .banner h1{
+    font-family:var(--display); color:#fff; font-size:clamp(40px,8vw,88px);
+    letter-spacing:0.01em; z-index:2; text-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  }
+
+  /* PROFILE ROW */
+  .profile-row{
+    max-width:1100px; margin:0 auto; padding:0 24px;
+    display:flex; align-items:flex-end; gap:20px;
+    margin-top:-56px; position:relative; z-index:5; flex-wrap:wrap;
+  }
+  .avatar{
+    width:110px; height:110px; border-radius:20px; overflow:hidden;
+    border:4px solid var(--paper); background:var(--deep);
+    box-shadow:0 10px 24px rgba(7,59,87,0.25); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .avatar span{font-family:var(--display); color:#fff; font-size:26px;}
+  .profile-info{padding-bottom:10px; flex:1; min-width:240px;}
+  .profile-info h2{font-size:22px; letter-spacing:-0.01em; margin-bottom:6px;}
+  .meta-line{
+    display:flex; gap:16px; flex-wrap:wrap; font-size:13.5px; color:var(--ink-soft); align-items:center;
+  }
+  .status{
+    display:inline-flex; align-items:center; gap:6px; font-weight:600;
+  }
+  .status .dot{width:8px; height:8px; border-radius:50%; background:#2BAE66;}
+  .status.closed .dot{background:#D64545;}
+  .status.closed{color:#D64545;}
+
+  .social-row{display:flex; gap:10px; padding-bottom:10px;}
+  .social-row a{
+    width:38px; height:38px; border-radius:50%; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:15px;
+    background:#fff; transition:background .2s;
+  }
+  .social-row a:hover{background:var(--foam);}
+
+  /* CATEGORY TABS */
+  .tabs{
+    max-width:1100px; margin:0 auto; padding:26px 24px 0;
+    display:flex; gap:28px; overflow-x:auto; border-bottom:1px solid var(--line);
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    white-space:nowrap; font-weight:700; font-size:14.5px; color:var(--ink-soft);
+    padding-bottom:14px; border-bottom:3px solid transparent; cursor:pointer;
+    transition:color .2s, border-color .2s;
+  }
+  .tab.active{color:var(--ocean); border-color:var(--coral);}
+
+  /* SECTION */
+  .section{max-width:1100px; margin:0 auto; padding:40px 24px 10px;}
+  .section h3{font-size:19px; margin-bottom:18px; letter-spacing:-0.01em;}
+
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:18px;
+  }
+  .item-card{
+    background:var(--paper); border-radius:var(--radius); overflow:hidden;
+    border:1px solid var(--line); position:relative;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .item-card:hover{transform:translateY(-3px); box-shadow:0 14px 26px -16px rgba(7,59,87,0.35);}
+  .item-card .thumb{height:110px; background:var(--foam);}
+  .item-card .info{padding:12px 14px 14px;}
+  .item-card .price{font-weight:700; font-size:14.5px;}
+  .item-card .name{font-size:12.5px; color:var(--ink-soft); margin-top:2px; line-height:1.3;}
+  .add-btn{
+    position:absolute; top:84px; right:10px;
+    width:34px; height:34px; border-radius:50%; background:var(--coral); color:#fff;
+    border:3px solid var(--paper); font-size:18px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition:transform .15s;
+  }
+  .add-btn:hover{transform:scale(1.1);}
+
+  /* LIST ITEMS (combinados) */
+  .list-row{
+    display:flex; gap:16px; padding:18px 0; border-bottom:1px solid var(--line);
+    align-items:center; flex-wrap:wrap;
+  }
+  .list-row .text{flex:1; min-width:220px;}
+  .list-row .text h4{font-size:16px; margin-bottom:4px;}
+  .list-row .text p{font-size:13px; color:var(--ink-soft); line-height:1.45; margin-bottom:8px;}
+  .list-row .text .price{font-weight:700; font-size:15px;}
+  .list-row .thumb-wrap{
+    position:relative; width:110px; height:80px; border-radius:12px; overflow:hidden;
+    background:var(--foam); flex-shrink:0;
+  }
+  .list-row .add-btn{top:auto; bottom:6px; right:6px; width:28px; height:28px; font-size:15px;}
+
+  /* CART BUBBLE */
+  .cart-bubble{
+    position:fixed; bottom:26px; right:26px; z-index:60;
+    background:var(--deep); color:#fff; padding:14px 22px; border-radius:999px;
+    display:flex; align-items:center; gap:10px; font-weight:700; font-size:14.5px;
+    box-shadow:0 14px 30px -10px rgba(7,59,87,0.5); cursor:pointer;
+    transform:translateY(120px); opacity:0; transition:transform .35s ease, opacity .35s ease;
+  }
+  .cart-bubble.show{transform:translateY(0); opacity:1;}
+  .cart-bubble .badge{
+    background:var(--coral); border-radius:999px; padding:2px 9px; font-size:12.5px;
+  }
+
+  footer{
+    margin-top:60px; background:var(--deep); color:rgba(255,255,255,0.75);
+    padding:36px 24px; text-align:center; font-size:13px;
+  }
+  footer strong{color:#fff;}
+
+  @media (max-width:600px){
+    .banner{height:190px;}
+    .avatar{width:88px; height:88px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topstrip">⭐ Gana puntos y recompensas con cada pedido</div>
+
+<div class="banner">
+  <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+    <path fill="#0A5A82" d="M0,64 C240,120 480,0 720,32 C960,64 1200,120 1440,64 L1440,120 L0,120 Z"></path>
+    <path fill="#EAF6F8" opacity="0.15" d="M0,90 C240,40 480,110 720,70 C960,30 1200,100 1440,60 L1440,120 L0,120 Z"></path>
+  </svg>
+  <h1>OLA BRAVA</h1>
+</div>
+
+<div class="profile-row">
+  <div class="avatar"><span>OB</span></div>
+  <div class="profile-info">
+    <h2>Ola Brava — Barra Cevichera</h2>
+    <div class="meta-line">
+      <span class="status"><span class="dot"></span> Abierto ahora</span>
+      <span>📍 Av. del Mar 214, Miraflores, Lima</span>
+      <span>🕒 Entrega en 25–35 min</span>
+    </div>
+  </div>
+  <div class="social-row">
+    <a href="#" title="WhatsApp">💬</a>
+    <a href="#" title="Instagram">📷</a>
+    <a href="#" title="Facebook">📘</a>
+  </div>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab active" data-target="destacados">Destacados 🔥</div>
+  <div class="tab" data-target="combinados">Combinados</div>
+  <div class="tab" data-target="combos">Combos 🍤🍹</div>
+  <div class="tab" data-target="duos-trios">Duos / Trios</div>
+  <div class="tab" data-target="panes">Panes 🥖</div>
+</div>
+
+<section class="section" id="destacados">
+  <h3>Destacados 🔥</h3>
+  <div class="grid" id="destacados-grid"></div>
+</section>
+
+<section class="section" id="combinados">
+  <h3>Combinados / Mostrito Marino</h3>
+  <div id="combinados-list"></div>
+</section>
+
+<section class="section" id="combos">
+  <h3>Combos 🍤🍹</h3>
+  <div id="combos-list"></div>
+</section>
+
+<section class="section" id="duos-trios">
+  <h3>Duos y Trios</h3>
+  <div class="grid" id="duos-grid"></div>
+</section>
+
+<div class="cart-bubble" id="cartBubble">
+  🛒 Ver pedido <span class="badge" id="cartCount">0</span>
+</div>
+
+<footer>
+  <p><strong>Ola Brava</strong> · Barra cevichera</p>
+  <p>Pedidos por WhatsApp: +51 987 654 321 · Miraflores, Lima</p>
+</footer>
+
+<script>
+  const palette = ['#0A5A82','#0E6C99','#124C74','#0A5A82','#0E6C99'];
+  const destacados = [
+    {n:'Tiradito clásico', p:15},
+    {n:'Leche de tigre barra (solo pota)', p:16},
+    {n:'Ceviche de pota', p:16},
+    {n:'Trio marino', p:30},
+    {n:'Duo brasero', p:20},
+    {n:'Parihuela criolla', p:15},
+    {n:'Menestrón marino', p:15},
+  ];
+  const combinados = [
+    {n:'Mostrito Bravo', d:'Arroz chaufa con trozos de chicharrón crujiente, yucas fritas y zarza criolla fresca.', p:15},
+    {n:'Super Mostro Marino', d:'Arroz chaufa, yucas fritas, pescado frito entero (merluza) + porción de ceviche.', p:19.9},
+  ];
+  const combos = [
+    {n:'Fetuccini a la crema (combo)', d:'Fetuccini cremoso en salsa blanca, con camarones y una mezcla de mariscos.', p:22},
+    {n:'Spaghetti Timbalero (combo)', d:'Spaghetti al dente con salsa de tomate y generosa mezcla de mariscos frescos.', p:22},
+  ];
+  const duos = [
+    {n:'Duo Cebiche + Arroz con mariscos', p:20},
+    {n:'Trio Cebiche + Chicharrón + Arroz', p:30},
+    {n:'Duo Jalea + Arroz chaufa', p:24},
+  ];
+
+  function thumb(i){ return `<div class="thumb" style="background:${palette[i % palette.length]}"></div>`; }
+
+  document.getElementById('destacados-grid').innerHTML = destacados.map((it,i)=>`
+    <div class="item-card" data-name="${it.n}" data-price="${it.p}">
+      ${thumb(i)}
+      <div class="add-btn">+</div>
+      <div class="info">
+        <div class="price">S/. ${it.p.toFixed(2)}</div>
+        <div class="name">${it.n}</div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('combinados-list').innerHTML = combinados.map((it,i)=>`
+    <div class="list-row" data-name="${it.n}" data-price="${it.p}">
+      <div class="text">
+        <h4>${it.n}</h4>
+        <p>${it.d}</p>
+        <div class="price">S/. ${it.p.toFixed(2)}</div>
+      </div>
+      <div class="thumb-wrap">${thumb(i)}<div class="add-btn">+</div></div>
+    </div>`).join('');
+
+  document.getElementById('combos-list').innerHTML = combos.map((it,i)=>`
+    <div class="list-row" data-name="${it.n}" data-price="${it.p}">
+      <div class="text">
+        <h4>${it.n}</h4>
+        <p>${it.d}</p>
+        <div class="price">S/. ${it.p.toFixed(2)}</div>
+      </div>
+      <div class="thumb-wrap">${thumb(i)}<div class="add-btn">+</div></div>
+    </div>`).join('');
+
+  document.getElementById('duos-grid').innerHTML = duos.map((it,i)=>`
+    <div class="item-card" data-name="${it.n}" data-price="${it.p}">
+      ${thumb(i)}
+      <div class="add-btn">+</div>
+      <div class="info">
+        <div class="price">S/. ${it.p.toFixed(2)}</div>
+        <div class="name">${it.n}</div>
+      </div>
+    </div>`).join('');
+
+  // Cart interaction
+  let count = 0;
+  const bubble = document.getElementById('cartBubble');
+  const countEl = document.getElementById('cartCount');
+  document.body.addEventListener('click', (e)=>{
+    if(e.target.classList.contains('add-btn')){
+      count++;
+      countEl.textContent = count;
+      bubble.classList.add('show');
+      e.target.style.transform = 'scale(1.3)';
+      setTimeout(()=> e.target.style.transform = '', 150);
+    }
+  });
+
+  // Tabs scroll
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+</script>
+
+</body>
+</html>
